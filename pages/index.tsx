@@ -2,8 +2,16 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import NodeRSA from 'node-rsa'
 
 const Home: NextPage = () => {
+  const key = new NodeRSA({b: 512});
+  
+  const text = 'Hello RSA!';
+  const encrypted = key.encrypt(text, 'base64');
+  console.log('encrypted: ', encrypted);
+  const decrypted = key.decrypt(encrypted, 'utf8');
+  console.log('decrypted: ', decrypted);
   return (
     <div className={styles.container}>
       <Head>
