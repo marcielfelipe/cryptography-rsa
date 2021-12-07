@@ -3,15 +3,25 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import NodeRSA from 'node-rsa'
+import { TextField } from '@mui/material'
+import { Box } from '@mui/system'
+import { useState } from 'react'
 
 const Home: NextPage = () => {
-  const key = new NodeRSA({b: 512});
+  const [texto,setTexto] = useState('')
+  const [textoEncriptado,setTextoEncriptado] = useState('')
   
-  const text = 'Hello RSA!';
-  const encrypted = key.encrypt(text, 'base64');
-  console.log('encrypted: ', encrypted);
-  const decrypted = key.decrypt(encrypted, 'utf8');
-  console.log('decrypted: ', decrypted);
+  function encrypt(){
+    const key = new NodeRSA({b: 512});
+    const encrypted = key.encrypt(texto, 'base64');
+    setTextoEncriptado(encrypted)
+  }
+  function decrypt(){
+    const key = new NodeRSA({b: 512});
+    const decrypted = key.decrypt(textoEncriptado, 'utf8');
+    console.log(decrypted)
+    setTexto(decrypted)
+  }
   return (
     <div className={styles.container}>
       <Head>
@@ -22,41 +32,40 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Criptografia com algoritmo <a>RSA</a>
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
+            <TextField 
+              value={texto}
+              onChange={(e)=> setTexto(e.target.value)}
+              className={styles.inputTexto} 
+              id="standard-basic" 
+              label="Texto" 
+              variant="standard" 
+            />
+            <TextField 
+              value={textoEncriptado}
+              onChange={(e)=> setTextoEncriptado(e.target.value)}
+              style={{"width":"300px"}}
+              id="standard-basic" 
+              label="Texto criptografado" 
+              variant="standard" 
+            />
+
         </p>
 
         <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
+          <a className={styles.card}
+            onClick={encrypt}
           >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
+            <h2>Encriptar &rarr;</h2>
           </a>
 
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
+          <a className={styles.card}
+            onClick={decrypt}
           >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
+            <h2>Desencriptar &larr;</h2>
           </a>
         </div>
       </main>

@@ -45,6 +45,11 @@
   font-size: 4rem;
 }
 
+.inputTexto{
+  margin-right: 50px;
+  width: 300px;
+}
+
 .title,
 .description {
   text-align: center;
